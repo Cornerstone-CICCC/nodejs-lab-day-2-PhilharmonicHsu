@@ -1,0 +1,84 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout>
+    <main class="container">
+        <h1>Login</h1>
+        <section class="input-area">
+            <label>Username:
+                <input id="username" type="text" name="username" placeholder="Enter username" required>
+            </label>
+            
+            
+            <label>Password:
+                <input id="password" type="password" name="password" placeholder="Enter password" required>
+            </label>
+
+            <div class="button-area">
+                <button id="login-btn" type="button">Log In</button>
+                <button id="sign-up-btn" type="button">Register</button>
+            </div>
+        </section>
+    </main>
+</Layout>
+<script> 
+    const usernameInput = document.getElementById('username') as HTMLButtonElement
+    const passwordInput = document.getElementById('password') as HTMLButtonElement
+    const loginBtn = document.getElementById('login-btn') as HTMLButtonElement
+    const signUpBtn = document.getElementById('sign-up-btn') as HTMLButtonElement
+
+    loginBtn.addEventListener('click', async () => {
+        const response = await fetch('http://localhost:3000/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: usernameInput.value,
+                password: passwordInput.value
+            }),
+            credentials: 'include'
+        })
+
+        if (! response.ok) {
+            alert('username or password is incorrect!')
+
+            return
+        }
+
+        window.location.href = '/profile'
+    })
+
+    signUpBtn.addEventListener('click', () => {
+        window.location.href = '/register'
+    })
+</script>
+<style lang="scss">
+.container {
+    padding: 2rem;
+
+    h1 {
+        font-size: 5rem;
+        font-weight: 800;
+        text-align: center;
+    }
+
+    .input-area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .button-area {
+            display: flex;
+            gap: 2rem;
+
+            button {
+                margin-top: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    }
+}
+</style>
